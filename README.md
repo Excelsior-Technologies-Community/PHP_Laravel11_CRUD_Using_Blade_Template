@@ -1,66 +1,188 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel 11 CRUD Application (With Pagination & Search)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**By:** Manasi Patel
+**Project Name:** CRUDSearchApp
+**Laravel Version:** 11
+**Date:** 2025
 
-## About Laravel
+This is a **simple Product Management System** built using Laravel 11. It allows users to **create, read, update, and delete products** with search and pagination functionalities. This tutorial-style project is beginner-friendly and fully explained.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* Add, edit, and delete products
+* Search products by name, ID, price, or description
+* Pagination to display products in pages
+* Soft delete with restore option
+* Clean and professional UI using Bootstrap 5
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Installation & Setup
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Step 1: Install Laravel 11
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+composer create-project laravel/laravel CRUDSearchApp "^11.0"
+cd CRUDSearchApp
+```
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Step 2: Configure Database
 
-### Premium Partners
+Update `.env` file with your database credentials:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=crud_app
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-## Contributing
+Create the database in MySQL:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```sql
+CREATE DATABASE crud_app;
+```
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Step 3: Create Products Table Migration
 
-## Security Vulnerabilities
+Generate migration:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+php artisan make:migration create_products_table --create=products
+```
 
-## License
+Edit the migration file to define columns (`id`, `name`, `description`, `price`, `created_by`, `updated_by`, `status`, timestamps, soft delete).
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Run migration:
+
+```bash
+php artisan migrate
+```
+
+---
+
+### Step 4: Add Routes
+
+Open `routes/web.php` and add:
+
+```php
+use App\Http\Controllers\ProductController;
+
+Route::get('/', function () {
+    return redirect()->route('products.index');
+});
+
+Route::resource('products', ProductController::class);
+Route::get('products/restore/{id}', [ProductController::class, 'restore'])->name('products.restore');
+```
+
+---
+
+### Step 5: Create Model & Controller
+
+Generate model and controller:
+
+```bash
+php artisan make:controller ProductController --resource --model=Product
+```
+
+* **Product Model:**
+
+  * Uses `HasFactory` and `SoftDeletes`
+  * Fillable fields: `name`, `description`, `price`, `created_by`, `updated_by`, `status`
+
+* **ProductController:**
+
+  * `index()` → list products with search & pagination
+  * `create()` → show form
+  * `store()` → add new product
+  * `edit()` → show edit form
+  * `update()` → update product
+  * `destroy()` → soft delete product
+  * `show()` → view product details
+  * `restore()` → restore soft-deleted product
+
+---
+
+### Step 6: Blade Views
+
+Create the following **Blade views** (in `resources/views`):
+
+* `layouts/app.blade.php` → main layout
+* `products/index.blade.php` → product list
+* `products/create.blade.php` → add product form
+* `products/edit.blade.php` → edit form
+* `products/show.blade.php` → product details
+
+> **Note:** Blade files include Bootstrap 5 styling, search bar, pagination, status badges, and action buttons.
+
+---
+
+### Step 7: Run the Application
+
+```bash
+php artisan serve
+```
+
+Open in browser:
+
+```
+http://localhost:8000/products
+```
+
+---
+
+## Usage
+
+* Add new products
+* Edit existing products
+* Delete products (soft delete)
+* Search products by name, ID, price, or description
+* Paginate product list
+* Restore deleted products
+
+---
+
+## Commands Summary
+
+```bash
+# Create Laravel project
+composer create-project laravel/laravel CRUDSearchApp "^11.0"
+
+# Navigate to project
+cd CRUDSearchApp
+
+# Create migration for products table
+php artisan make:migration create_products_table --create=products
+
+# Run migration
+php artisan migrate
+
+# Generate controller with model
+php artisan make:controller ProductController --resource --model=Product
+
+# Serve the application
+php artisan serve
+```
+
+---
+
+## Technologies Used
+
+* **Laravel 11**
+* **PHP 8+**
+* **MySQL**
+* **Bootstrap 5**
+* **Blade Templates**
+
+---
+
+✅ **Congratulations!** Your Laravel 11 CRUD application is fully functional with **search, pagination, and soft delete** features.
