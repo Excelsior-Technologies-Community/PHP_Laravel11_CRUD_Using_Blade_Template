@@ -44,12 +44,12 @@ cd CRUDSearchApp
 Create a database named crud_app:
 
 sql
-Copy code
+
 CREATE DATABASE crud_app;
 Update .env:
 
 makefile
-Copy code
+
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
@@ -60,12 +60,12 @@ DB_PASSWORD=
 Create migration:
 
 bash
-Copy code
+
 php artisan make:migration create_products_table --create=products
 Edit migration database/migrations/YYYY_MM_DD_create_products_table.php:
 
 php
-Copy code
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -97,18 +97,17 @@ return new class extends Migration
 Run migration:
 
 bash
-Copy code
 php artisan migrate
 🧑‍💻 4. Model and Controller
 Generate model & controller:
 
 bash
-Copy code
+
 php artisan make:controller ProductController --resource --model=Product
 Product Model - app/Models/Product.php:
 
 php
-Copy code
+ 
 <?php
 
 namespace App\Models;
@@ -128,7 +127,7 @@ class Product extends Model
 Product Controller - app/Http/Controllers/ProductController.php:
 
 php
-Copy code
+
 <?php
 
 namespace App\Http\Controllers;
@@ -223,7 +222,7 @@ class ProductController extends Controller
 routes/web.php:
 
 php
-Copy code
+
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -236,7 +235,7 @@ Route::get('products/restore/{id}', [ProductController::class, 'restore'])
 🖥 6. Blade Views
 6.1 Layout - resources/views/layouts/app.blade.php
 html
-Copy code
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -269,7 +268,7 @@ Copy code
 </html>
 6.2 Product Index - resources/views/products/index.blade.php
 html
-Copy code
+
 @extends('layouts.app')
 
 @section('title', 'Products List')
@@ -338,7 +337,7 @@ Copy code
 @endsection
 6.3 Product Create - resources/views/products/create.blade.php
 html
-Copy code
+
 @extends('layouts.app')
 
 @section('title', 'Add Product')
@@ -374,7 +373,7 @@ Copy code
 @endsection
 6.4 Product Edit - resources/views/products/edit.blade.php
 html
-Copy code
+
 @extends('layouts.app')
 
 @section('title', 'Edit Product')
@@ -409,7 +408,7 @@ Copy code
 @endsection
 6.5 Product Show - resources/views/products/show.blade.php
 html
-Copy code
+
 @extends('layouts.app')
 
 @section('title', 'Product Details')
@@ -429,12 +428,12 @@ Copy code
 @endsection
 🚀 7. Run the Application
 bash
-Copy code
+
 php artisan serve
 Open in browser:
 
 bash
-Copy code
+
 http://localhost:8000/products
 You can now:
 
@@ -448,7 +447,7 @@ Restore soft-deleted products
 
 📂 8. Project Structure
 bash
-Copy code
+
 CRUDSearchApp
 │
 ├── app
