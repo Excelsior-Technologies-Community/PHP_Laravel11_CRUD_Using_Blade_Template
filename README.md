@@ -385,43 +385,31 @@ edit.blade.php,
 show.blade.php
 
 
-1) resources/views/layouts/app.blade.php
-
+1. resources/views/layouts/app.blade.php
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>@yield('title')</title>
-    <!-- 
-        @yield('title') → Allows child blade files to set a custom page title.
-        Example: @section('title','Products List')
-    -->
 
-    <!-- Bootstrap 5 CSS CDN for styling -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        /* Overall page background and font */
         body {
             background-color: #f5f6fa;
             font-family: 'Segoe UI', sans-serif;
         }
 
-        /* Extra spacing for page content */
         .container-custom {
             margin-top: 40px;
         }
 
-        /* Card styling (box shadow + rounded corners) */
         .card {
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
-        /* Search bar container layout */
         .search-bar {
             display: flex;
             justify-content: space-between;
@@ -429,76 +417,26 @@ show.blade.php
             margin-bottom: 20px;
         }
 
-        /* Search input width */
         .search-bar input {
             width: 250px;
         }
 
-        /* Badge color for active status */
-        .badge-active {
-            background-color: #28a745;
-        }
+        .badge-active { background-color: #28a745; }
+        .badge-deleted { background-color: #dc3545; }
 
-        /* Badge color for deleted status */
-        .badge-deleted {
-            background-color: #dc3545;
-        }
+        table th { background-color: #f8f9fa; }
 
-        /* Table header style */
-        table th {
-            background-color: #f8f9fa;
-        }
+        .btn-show { background-color: #0d6efd; color: white; }
+        .btn-show:hover { background-color: #0b5ed7; }
 
-        /* Show button styling */
-        .btn-show {
-            background-color: #0d6efd;
-            color: #fff;
-        }
+        .btn-edit { background-color: #ffc107; color: white; }
+        .btn-edit:hover { background-color: #e0a800; }
 
-        .btn-show:hover {
-            background-color: #0b5ed7;
-        }
+        .btn-delete { background-color: #dc3545; color: white; }
+        .btn-delete:hover { background-color: #c82333; }
 
-        /* Edit button styling */
-        .btn-edit {
-            background-color: #ffc107;
-            color: #fff;
-        }
-
-        .btn-edit:hover {
-            background-color: #e0a800;
-        }
-
-        /* Delete button styling */
-        .btn-delete {
-            background-color: #dc3545;
-            color: #fff;
-        }
-
-        .btn-delete:hover {
-            background-color: #c82333;
-        }
-
-        /* Center pagination block */
         .pagination {
             justify-content: center;
-        }
-
-        /* Responsive design for search bar on small screens */
-        @media(max-width:768px) {
-            .search-bar {
-                flex-direction: column;
-                gap: 10px;
-                align-items: flex-start;
-            }
-
-            .search-bar input {
-                width: 100%;
-            }
-        }
-
-        /* Custom pagination styling */
-        .pagination {
             display: flex;
             gap: 6px;
         }
@@ -508,395 +446,219 @@ show.blade.php
             padding: 8px 14px;
             font-size: 14px;
             border: 1px solid #dee2e6;
-            transition: all 0.2s ease-in-out;
+            transition: 0.2s ease-in-out;
         }
 
         .page-item.active .page-link {
             background-color: #0d6efd;
             border-color: #0d6efd;
             color: white;
-            box-shadow: 0 2px 8px rgba(13, 110, 253, 0.3);
         }
 
-        .page-item .page-link:hover {
-            background-color: #e9f2ff;
-            border-color: #0d6efd;
-            color: #0d6efd;
+        @media (max-width: 768px) {
+            .search-bar {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+            .search-bar input { width: 100%; }
         }
-
-        .page-item.disabled .page-link {
-            background-color: #f2f2f2;
-            color: #b5b5b5;
-            pointer-events: none;
-        }
-
     </style>
 </head>
 
 <body>
 
-    <div class="container container-custom">
-        <!-- Page heading fetched from child view -->
-        <h1 class="text-center mb-4">@yield('header')</h1>
+<div class="container container-custom">
+    @yield('content')
+</div>
 
-        <!-- Dynamic page content from child blade -->
-        @yield('content')
-    </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Bootstrap JS bundle for components (modal, dropdown, alerts etc.) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
 
-
-2) resources/views/products/index.blade.php (List Page with Pagination & Search)
-
+✅ 2. resources/views/products/index.blade.php
 @extends('layouts.app')
 
-{{-- Page Title --}}
 @section('title', 'Products List')
 
-{{-- Page Header --}}
-@section('header', 'Products List')
-
 @section('content')
-    <div class="card p-4">
 
-        <!-- Search bar + Add product button -->
-        <div class="search-bar mb-3">
-            <!-- Search form (GET method so query shows in URL) -->
-            <form class="d-flex" method="GET" action="{{ route('products.index') }}">
-                <input class="form-control me-2" 
-                       type="text" 
-                       name="search" 
-                       value="{{ $search }}"
-                       placeholder="Search products...">
-                <button class="btn btn-primary" type="submit">Search</button>
-            </form>
+<div class="card p-4">
 
-            <!-- Button to open create form -->
-            <a href="{{ route('products.create') }}" class="btn btn-success">Add Product</a>
-        </div>
+    <div class="search-bar">
+        <h3>Products</h3>
 
-        <!-- Success message -->
-        @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-
-        <!-- Responsive table -->
-        <div class="table-responsive">
-            <table class="table table-hover align-middle text-center">
-                <thead class="table-light">
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Price</th>
-                        <th>Description</th>
-                        <th>Created By</th>
-                        <th>Updated By</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <!-- Loop through all products -->
-                    @forelse($products as $product)
-                        <tr>
-                            <td>{{ $product->id }}</td>
-                            <td>{{ $product->name }}</td>
-
-                            <!-- Format price with 2 decimals -->
-                            <td>${{ number_format($product->price, 2) }}</td>
-
-                            <td>{{ $product->description ?? '-' }}</td>
-                            <td>{{ $product->created_by ?? '-' }}</td>
-                            <td>{{ $product->updated_by ?? '-' }}</td>
-
-                            <!-- Status badge -->
-                            <td>
-                                <span class="badge {{ $product->status == 'Active' ? 'badge-active' : 'badge-deleted' }}">
-                                    {{ $product->status }}
-                                </span>
-                            </td>
-
-                            <!-- Action buttons -->
-                            <td>
-                                <!-- Show -->
-                                <a href="{{ route('products.show', $product->id) }}" 
-                                   class="btn btn-show btn-sm">Show</a>
-
-                                <!-- Edit -->
-                                <a href="{{ route('products.edit', $product->id) }}" 
-                                   class="btn btn-edit btn-sm">Edit</a>
-
-                                <!-- Delete -->
-                                <form style="display:inline;" 
-                                      method="POST"
-                                      action="{{ route('products.destroy', $product->id) }}">
-                                    @csrf 
-                                    @method('DELETE')
-
-                                    <button type="submit"
-                                            class="btn btn-delete btn-sm"
-                                            onclick="return confirm('Are you sure?')">
-                                        Delete
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-
-                    @empty
-                        <!-- When no products found -->
-                        <tr>
-                            <td colspan="8" class="text-center">No products found.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Pagination -->
-        <div class="d-flex justify-content-center mt-4">
-            {{ $products->onEachSide(1)->links('vendor.pagination.bootstrap-5') }}
-        </div>
-
+        <form action="{{ route('products.index') }}" method="GET">
+            <input type="text" name="search" class="form-control" placeholder="Search..." value="{{ $search }}">
+        </form>
     </div>
-@endsection
 
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
 
-3) resources/views/products/create.blade.php (Add New Product)
+    <a href="{{ route('products.create') }}" class="btn btn-primary mb-3">Add New Product</a>
 
-@extends('layouts.app')
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th width="5%">ID</th>
+                <th width="20%">Name</th>
+                <th>Description</th>
+                <th width="15%">Price</th>
+                <th width="10%">Status</th>
+                <th width="25%">Actions</th>
+            </tr>
+        </thead>
 
-{{-- Page title --}}
-@section('title','Add Product')
+        <tbody>
+            @forelse($products as $product)
+                <tr>
+                    <td>{{ $product->id }}</td>
 
-{{-- Page header --}}
-@section('header','Add Product')
+                    <td>{{ $product->name }}</td>
 
-@section('content')
+                    <td>{{ Str::limit($product->description, 40) }}</td>
 
-<div class="card p-4" style="max-width: 800px; margin: auto;">
+                    <td>₹ {{ number_format($product->price, 2) }}</td>
 
-    <!-- Back button -->
-    <a href="{{ route('products.index') }}"
-       class="btn btn-outline-secondary mb-3"
-       style="width: 150px;">
-        ← Back to List
-    </a><br> 
+                    <td>
+                        @if($product->status == 'Active')
+                            <span class="badge badge-active">Active</span>
+                        @else
+                            <span class="badge badge-deleted">Deleted</span>
+                        @endif
+                    </td>
 
-    <!-- Add Product Form -->
-    <form method="POST" 
-          action="{{ route('products.store') }}" 
-          class="row g-3 justify-content-center">
+                    <td>
+                        <a href="{{ route('products.show', $product->id) }}" class="btn btn-show btn-sm">View</a>
+                        <a href="{{ route('products.edit', $product->id) }}" class="btn btn-edit btn-sm">Edit</a>
 
-        @csrf <!-- CSRF Protection -->
+                        <form action="{{ route('products.destroy', $product->id) }}" method="POST"
+                            style="display:inline-block;">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-delete btn-sm" onclick="return confirm('Delete this product?')">
+                                Delete
+                            </button>
+                        </form>
 
-        <!-- Product Name Field -->
-        <div class="col-12">
-            <label class="form-label fw-semibold">Product Name:</label>
-            <input type="text"
-                   name="name"
-                   class="form-control mx-auto"
-                   placeholder="Enter product name"
-                   required
-                   style="max-width: 400px;">
-        </div>
-
-        <!-- Price Field -->
-        <div class="col-12">
-            <label class="form-label fw-semibold">Price:</label>
-            <input type="number"
-                   step="0.01"
-                   name="price"
-                   class="form-control mx-auto"
-                   placeholder="Enter price"
-                   required
-                   style="max-width: 400px;">
-        </div>
-
-        <!-- Description Field -->
-        <div class="col-12">
-            <label class="form-label fw-semibold">Description:</label>
-            <textarea name="description"
-                      class="form-control mx-auto"
-                      rows="4"
-                      placeholder="Enter description"
-                      style="max-width: 400px;"></textarea>
-        </div>
-
-        <!-- Submit Button -->
-        <div class="col-12 text-center mt-3">
-            <button type="submit" class="btn btn-success px-4 py-2">
-                Add Product
-            </button>
-        </div>
-
-    </form>
-</div>
-
-@endsection
-
-
-4) resources/views/products/edit.blade.php (Edit Product)
-
-@extends('layouts.app')
-
-{{-- Page title --}}
-@section('title','Edit Product')
-
-{{-- Page header --}}
-@section('header','Edit Product')
-
-@section('content')
-
-<div class="card p-4" style="max-width: 800px; margin: auto;">
-
-    <!-- Back button -->
-    <a href="{{ route('products.index') }}"
-       class="btn btn-outline-secondary mb-3"
-       style="width: 150px;">
-        ← Back to List
-    </a>
-
-    <!-- Edit Form -->
-    <form method="POST"
-          action="{{ route('products.update', $product->id) }}"
-          class="row g-3 justify-content-center">
-
-        @csrf
-        @method('PUT') <!-- PUT method for update request -->
-
-        <!-- Product Name Field -->
-        <div class="col-12">
-            <label class="form-label fw-semibold">Product Name:</label>
-            <input type="text"
-                   name="name"
-                   value="{{ $product->name }}"
-                   class="form-control mx-auto"
-                   placeholder="Enter product name"
-                   required
-                   style="max-width: 400px;">
-        </div>
-
-        <!-- Price Field -->
-        <div class="col-12">
-            <label class="form-label fw-semibold">Price:</label>
-            <input type="number"
-                   step="0.01"
-                   name="price"
-                   value="{{ $product->price }}"
-                   class="form-control mx-auto"
-                   placeholder="Enter price"
-                   required
-                   style="max-width: 400px;">
-        </div>
-
-        <!-- Description Field -->
-        <div class="col-12">
-            <label class="form-label fw-semibold">Description:</label>
-            <textarea name="description"
-                      class="form-control mx-auto"
-                      rows="4"
-                      placeholder="Enter description"
-                      style="max-width: 400px;">{{ $product->description }}</textarea>
-        </div>
-
-        <!-- Update Button -->
-        <div class="col-12 text-center mt-3">
-            <button type="submit" class="btn btn-success px-4 py-2">
-                Update Product
-            </button>
-        </div>
-
-    </form>
-</div>
-
-@endsection
-
-
-
-5) resources/views/products/show.blade.php (Show Product)
-
-
-@extends('layouts.app')
-
-{{-- Page title --}}
-@section('title','Product Details')
-
-{{-- Page header --}}
-@section('header','Product Details')
-
-@section('content')
-
-<div class="card shadow p-4" style="max-width: 700px; margin: auto;">
-
-    <!-- Product Title -->
-    <h3 class="text-center mb-4 fw-bold">{{ $product->name }}</h3>
-
-    <!-- Product Details Table -->
-    <table class="table table-bordered table-striped">
-        
-        <tr>
-            <th style="width: 30%;">ID</th>
-            <td>{{ $product->id }}</td>
-        </tr>
-
-        <tr>
-            <th>Name</th>
-            <td>{{ $product->name }}</td>
-        </tr>
-
-        <tr>
-            <th>Description</th>
-            <td>{{ $product->description ?? '-' }}</td>
-        </tr>
-
-        <tr>
-            <th>Price</th>
-            <td>₹{{ number_format($product->price, 2) }}</td>
-        </tr>
-
-        <tr>
-            <th>Created By</th>
-            <td>{{ $product->created_by ?? '-' }}</td>
-        </tr>
-
-        <tr>
-            <th>Updated By</th>
-            <td>{{ $product->updated_by ?? '-' }}</td>
-        </tr>
-
-        <tr>
-            <th>Status</th>
-            <td>
-                <!-- Status badge -->
-                <span class="badge 
-                    @if($product->status == 'Active') 
-                        bg-success 
-                    @else 
-                        bg-danger 
-                    @endif">
-                    {{ $product->status }}
-                </span>
-            </td>
-        </tr>
+                        @if($product->deleted_at)
+                            <a href="{{ route('products.restore', $product->id) }}" class="btn btn-info btn-sm">
+                                Restore
+                            </a>
+                        @endif
+                    </td>
+                </tr>
+            @empty
+                <tr><td colspan="6" class="text-center">No products found.</td></tr>
+            @endforelse
+        </tbody>
 
     </table>
 
-    <!-- Back Button -->
-    <div class="text-center mt-3">
-        <a href="{{ route('products.index') }}" class="btn btn-primary px-4">
-            Back to List
-        </a>
-    </div>
+    {{ $products->appends(['search' => $search])->links() }}
 
 </div>
 
 @endsection
 
+✅ 3. resources/views/products/create.blade.php
+@extends('layouts.app')
+
+@section('title', 'Add Product')
+
+@section('content')
+
+<div class="card p-4">
+    <h3>Add New Product</h3>
+
+    <form action="{{ route('products.store') }}" method="POST">
+        @csrf
+
+        <div class="mb-3">
+            <label class="form-label">Product Name *</label>
+            <input type="text" name="name" class="form-control" required>
+            @error('name') <span class="text-danger">{{ $message }}</span> @enderror
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea name="description" rows="4" class="form-control"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Price *</label>
+            <input type="number" step="0.01" name="price" class="form-control" required>
+            @error('price') <span class="text-danger">{{ $message }}</span> @enderror
+        </div>
+
+        <button class="btn btn-primary">Save Product</button>
+        <a href="{{ route('products.index') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+
+</div>
+
+@endsection
+
+✅ 4. resources/views/products/edit.blade.php
+@extends('layouts.app')
+
+@section('title', 'Edit Product')
+
+@section('content')
+
+<div class="card p-4">
+    <h3>Edit Product</h3>
+
+    <form action="{{ route('products.update', $product->id) }}" method="POST">
+        @csrf
+        @method('PUT')
+
+        <div class="mb-3">
+            <label class="form-label">Product Name *</label>
+            <input type="text" name="name" class="form-control" value="{{ $product->name }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea name="description" rows="4" class="form-control">{{ $product->description }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Price *</label>
+            <input type="number" step="0.01" name="price" value="{{ $product->price }}" class="form-control" required>
+        </div>
+
+        <button class="btn btn-success">Update</button>
+        <a href="{{ route('products.index') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+
+</div>
+
+@endsection
+
+✅ 5. resources/views/products/show.blade.php
+@extends('layouts.app')
+
+@section('title', 'Product Details')
+
+@section('content')
+
+<div class="card p-4">
+    <h3>Product Details</h3>
+
+    <p><strong>ID:</strong> {{ $product->id }}</p>
+    <p><strong>Name:</strong> {{ $product->name }}</p>
+    <p><strong>Description:</strong> {{ $product->description }}</p>
+    <p><strong>Price:</strong> ₹ {{ number_format($product->price, 2) }}</p>
+    <p><strong>Status:</strong> {{ $product->status }}</p>
+
+    <a href="{{ route('products.index') }}" class="btn btn-primary">Back</a>
+</div>
+
+@endsection
 
 Step 7: Run the Application
 php artisan serve
