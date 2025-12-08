@@ -34,12 +34,14 @@ All code includes comments explaining each step, making it beginner-friendly.
 
 ## 📁 1. Project Setup
 
-```bash
 # Install Laravel 11
+```
 composer create-project laravel/laravel CRUDSearchApp "^11.0"
-
+```
 # Navigate to project
+```
 cd CRUDSearchApp
+```
 ⚙ 2. Configure Database
 Create a database named crud_app:
 
@@ -49,22 +51,25 @@ CREATE DATABASE crud_app;
 Update .env:
 
 makefile
-
+```
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=crud_app
 DB_USERNAME=root
 DB_PASSWORD=
+```
+
 🗄 3. Migration (Products Table)
 Create migration:
 
-bash
 
+```
 php artisan make:migration create_products_table --create=products
+```
 Edit migration database/migrations/YYYY_MM_DD_create_products_table.php:
 
-php
+```
 
 <?php
 
@@ -94,19 +99,24 @@ return new class extends Migration
         Schema::dropIfExists('products');
     }
 };
+```
 Run migration:
 
-bash
+```
 php artisan migrate
+```
 🧑‍💻 4. Model and Controller
 Generate model & controller:
 
-bash
+```
 
 php artisan make:controller ProductController --resource --model=Product
-Product Model - app/Models/Product.php:
+php artisan make:model Product
 
-php
+```
+Product Model - app/Models/Product.php:
+```
+
  
 <?php
 
@@ -124,9 +134,10 @@ class Product extends Model
         'name', 'description', 'price', 'created_by', 'updated_by', 'status'
     ];
 }
+```
 Product Controller - app/Http/Controllers/ProductController.php:
 
-php
+```
 
 <?php
 
@@ -177,7 +188,8 @@ class ProductController extends Controller
                          ->with('success', 'Product added successfully!');
     }
 
-    public function edit(Product $product) { return view('products.edit', compact('product')); }
+    public function edit(Product $product)
+{ return view('products.edit', compact('product')); }
 
     public function update(Request $request, Product $product)
     {
@@ -218,11 +230,12 @@ class ProductController extends Controller
                          ->with('success', 'Product restored successfully!');
     }
 }
+```
 🌐 5. Routes
 routes/web.php:
 
-php
-
+```
+<?php
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -232,9 +245,11 @@ Route::resource('products', ProductController::class);
 
 Route::get('products/restore/{id}', [ProductController::class, 'restore'])
     ->name('products.restore');
+
+```
 🖥 6. Blade Views
 6.1 Layout - resources/views/layouts/app.blade.php
-html
+```
 
 <!DOCTYPE html>
 <html lang="en">
@@ -266,8 +281,9 @@ html
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+```
 6.2 Product Index - resources/views/products/index.blade.php
-html
+```
 
 @extends('layouts.app')
 
@@ -335,8 +351,9 @@ html
     {{ $products->appends(['search'=>$search])->links() }}
 </div>
 @endsection
+```
 6.3 Product Create - resources/views/products/create.blade.php
-html
+```
 
 @extends('layouts.app')
 
@@ -371,9 +388,9 @@ html
     </form>
 </div>
 @endsection
+```
 6.4 Product Edit - resources/views/products/edit.blade.php
-html
-
+```
 @extends('layouts.app')
 
 @section('title', 'Edit Product')
@@ -406,8 +423,9 @@ html
     </form>
 </div>
 @endsection
+```
 6.5 Product Show - resources/views/products/show.blade.php
-html
+```
 
 @extends('layouts.app')
 
@@ -426,15 +444,16 @@ html
     <a href="{{ route('products.index') }}" class="btn btn-primary">Back</a>
 </div>
 @endsection
+```
 🚀 7. Run the Application
-bash
+```
 
 php artisan serve
+```
 Open in browser:
-
-bash
-
+```
 http://localhost:8000/products
+```
 You can now:
 
 Add, edit, and delete products
@@ -446,7 +465,7 @@ View product details
 Restore soft-deleted products
 
 📂 8. Project Structure
-bash
+```
 
 CRUDSearchApp
 │
@@ -463,4 +482,5 @@ CRUDSearchApp
 ├── routes/web.php
 ├── .env
 └── composer.json
+```
 🎉 Completed!
