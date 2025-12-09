@@ -1,6 +1,6 @@
 # PHP_Laravel11_CRUD_Using_Blade_Template
 
-**Project Name:** CRUDSearchApp  
+**Project Name:** PHP_Laravel11_CRUD_Using_Blade_Template 
 **Author:** Manasi Patel  
 **Date:** 2025  
 **Laravel Version:** 11  
