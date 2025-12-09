@@ -1,4 +1,4 @@
-# Laravel 11 CRUD Application
+# PHP_Laravel12_CRUD_Using_Blade_Template
 
 **Project Name:** CRUDSearchApp  
 **Author:** Manasi Patel  
