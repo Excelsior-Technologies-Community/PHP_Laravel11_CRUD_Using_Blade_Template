@@ -467,7 +467,7 @@ Restore soft-deleted products
 📂 8. Project Structure
 ```
 
-CRUDSearchApp
+PHP_Laravel11_CRUD_Using_Blade_Template
 │
 ├── app
 │   ├── Models/Product.php
