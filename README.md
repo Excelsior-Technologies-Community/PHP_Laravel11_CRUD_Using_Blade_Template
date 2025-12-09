@@ -36,11 +36,11 @@ All code includes comments explaining each step, making it beginner-friendly.
 
 # Install Laravel 11
 ```
-composer create-project laravel/laravel CRUDSearchApp "^11.0"
+composer create-project laravel/laravel PHP_Laravel12_CRUD_Using_Blade_Template "^11.0"
 ```
 # Navigate to project
 ```
-cd CRUDSearchApp
+cd PHP_Laravel12_CRUD_Using_Blade_Template
 ```
 ⚙ 2. Configure Database
 Create a database named crud_app:
