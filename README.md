@@ -9,7 +9,7 @@ A simple Product Management System built with Laravel 11, demonstrating CRUD ope
 
 ---
 
-## ⭐ Overview
+##  Overview
 
 This project teaches you how to:
 
@@ -22,7 +22,7 @@ All code includes comments explaining each step, making it beginner-friendly.
 
 ---
 
-## 🔥 Features
+##  Features
 
 - ✔ Add, edit, delete, and view products  
 - ✔ Search products by name, price, ID, or description  
@@ -32,7 +32,7 @@ All code includes comments explaining each step, making it beginner-friendly.
 
 ---
 
-## 📁 1. Project Setup
+##  1. Project Setup
 
 # Install Laravel 11
 ```
@@ -105,7 +105,7 @@ Run migration:
 ```
 php artisan migrate
 ```
-🧑‍💻 4. Model and Controller
+ 4. Model and Controller
 Generate model & controller:
 
 ```
@@ -231,7 +231,7 @@ class ProductController extends Controller
     }
 }
 ```
-🌐 5. Routes
+ 5. Routes
 routes/web.php:
 
 ```
@@ -247,7 +247,7 @@ Route::get('products/restore/{id}', [ProductController::class, 'restore'])
     ->name('products.restore');
 
 ```
-🖥 6. Blade Views
+ 6. Blade Views
 6.1 Layout - resources/views/layouts/app.blade.php
 ```
 
@@ -445,7 +445,7 @@ Route::get('products/restore/{id}', [ProductController::class, 'restore'])
 </div>
 @endsection
 ```
-🚀 7. Run the Application
+ 7. Run the Application
 ```
 
 php artisan serve
@@ -464,7 +464,7 @@ View product details
 
 Restore soft-deleted products
 
-📂 8. Project Structure
+ 8. Project Structure
 ```
 
 PHP_Laravel11_CRUD_Using_Blade_Template
@@ -483,4 +483,4 @@ PHP_Laravel11_CRUD_Using_Blade_Template
 ├── .env
 └── composer.json
 ```
-🎉 Completed!
+ Completed!
