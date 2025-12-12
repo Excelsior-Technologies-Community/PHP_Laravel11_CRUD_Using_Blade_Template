@@ -24,11 +24,11 @@ All code includes comments explaining each step, making it beginner-friendly.
 
 ##  Features
 
-- ✔ Add, edit, delete, and view products  
-- ✔ Search products by name, price, ID, or description  
-- ✔ Pagination (5 products per page)  
-- ✔ Soft delete with restore functionality  
-- ✔ Clean UI with Bootstrap 5  
+-  Add, edit, delete, and view products  
+-  Search products by name, price, ID, or description  
+-  Pagination (5 products per page)  
+-  Soft delete with restore functionality  
+-  Clean UI with Bootstrap 5  
 
 ---
 
@@ -454,6 +454,18 @@ Open in browser:
 ```
 http://localhost:8000/products
 ```
+
+You can show this type Output : 
+index page:
+<img width="1911" height="969" alt="Screenshot 2025-12-03 132129" src="https://github.com/user-attachments/assets/6f7a0db3-13ae-4831-8cf9-71aaf9b7e673" />
+add product page :
+<img width="1919" height="964" alt="Screenshot 2025-12-03 132247" src="https://github.com/user-attachments/assets/a110e8ec-4ed9-4b55-9200-38697fdad70b" />
+edit product page :
+<img width="1911" height="962" alt="image" src="https://github.com/user-attachments/assets/f4c70bbd-fd07-4116-8b72-05c5dd371250" />
+show product page :
+<img width="1919" height="972" alt="Screenshot 2025-12-03 132300" src="https://github.com/user-attachments/assets/36723cfe-1f96-4dc3-abb4-70c4aadc5fc7" />
+
+
 You can now:
 
 Add, edit, and delete products
