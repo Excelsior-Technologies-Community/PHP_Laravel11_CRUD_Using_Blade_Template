@@ -456,10 +456,11 @@ http://localhost:8000/products
 ```
 
 You can show this type Output : 
+
 index page:
 <img width="1911" height="969" alt="Screenshot 2025-12-03 132129" src="https://github.com/user-attachments/assets/6f7a0db3-13ae-4831-8cf9-71aaf9b7e673" />
 add product page :
-<img width="1919" height="964" alt="Screenshot 2025-12-03 132247" src="https://github.com/user-attachments/assets/a110e8ec-4ed9-4b55-9200-38697fdad70b" />
+<img width="1919" height="948" alt="Screenshot 2025-12-03 132157" src="https://github.com/user-attachments/assets/64731144-cb9b-4e47-9d14-8db42d41c15c" />
 edit product page :
 <img width="1911" height="962" alt="image" src="https://github.com/user-attachments/assets/f4c70bbd-fd07-4116-8b72-05c5dd371250" />
 show product page :
