@@ -1,8 +1,6 @@
 # PHP_Laravel11_CRUD_Using_Blade_Template
 
-**Project Name:** PHP_Laravel11_CRUD_Using_Blade_Template 
-**Author:** Manasi Patel  
-**Date:** 2025  
+
 **Laravel Version:** 11  
 
 A simple Product Management System built with Laravel 11, demonstrating CRUD operations with search and pagination.
