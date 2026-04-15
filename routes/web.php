@@ -26,4 +26,9 @@ Route::resource('products', ProductController::class);
 Route::get('products/restore/{id}', [ProductController::class, 'restore'])
     ->name('products.restore');
 
+<<<<<<< HEAD
 
+=======
+// Export products as CSV
+Route::get('products/export/csv', [ProductController::class, 'exportCSV'])->name('products.export.csv');
+>>>>>>> development

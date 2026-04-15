@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 
 class ProductController extends Controller
 {
     /**
+<<<<<<< HEAD
      * Display product list with search + pagination
      */
     public function index(Request $request)
@@ -32,6 +34,35 @@ class ProductController extends Controller
         return view('products.index', compact('products', 'search'));
     }
 
+=======
+     * Display product list with search + pagination + summary (total count + total price)
+     */
+
+    public function index(Request $request)
+    {
+        $search = $request->query('search');
+
+        $productsQuery = Product::query()
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('price', 'like', "%{$search}%")
+                        ->orWhere('id', 'like', "%{$search}%")
+                        ->orWhere('description', 'like', "%{$search}%");
+                });
+            });
+
+        // Pagination
+        $products = $productsQuery->paginate(5);
+
+        // New summary variables
+        $totalProducts = $productsQuery->count();       // Total products matching search
+        $totalValue = $productsQuery->sum('price');    // Total price sum
+
+        return view('products.index', compact('products', 'search', 'totalProducts', 'totalValue'));
+    }
+
+>>>>>>> development
 
     /**
      * Show product create form
@@ -64,7 +95,11 @@ class ProductController extends Controller
 
         // Redirect back with success message
         return redirect()->route('products.index')
+<<<<<<< HEAD
                          ->with('success', 'Product added successfully!');
+=======
+            ->with('success', 'Product added successfully!');
+>>>>>>> development
     }
 
     /**
@@ -96,7 +131,11 @@ class ProductController extends Controller
         ]);
 
         return redirect()->route('products.index')
+<<<<<<< HEAD
                          ->with('success', 'Product updated successfully!');
+=======
+            ->with('success', 'Product updated successfully!');
+>>>>>>> development
     }
 
     /**
@@ -111,7 +150,11 @@ class ProductController extends Controller
         $product->delete();
 
         return redirect()->route('products.index')
+<<<<<<< HEAD
                          ->with('success', 'Product deleted successfully!');
+=======
+            ->with('success', 'Product deleted successfully!');
+>>>>>>> development
     }
 
     /**
@@ -120,5 +163,49 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         return view('products.show', compact('product'));
+    }
+
+    public function exportCSV(Request $request)
+    {
+        $search = $request->query('search');
+
+        $products = Product::query()
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('price', 'like', "%{$search}%")
+                        ->orWhere('id', 'like', "%{$search}%")
+                        ->orWhere('description', 'like', "%{$search}%");
+                });
+            })
+            ->get();
+
+        $filename = 'products_' . date('Ymd_His') . '.csv';
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"$filename\"",
+        ];
+
+        $columns = ['ID', 'Name', 'Price', 'Description', 'Created By', 'Updated By', 'Status'];
+
+        $callback = function () use ($products, $columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+
+            foreach ($products as $product) {
+                fputcsv($file, [
+                    $product->id,
+                    $product->name,
+                    $product->price,
+                    $product->description,
+                    $product->created_by,
+                    $product->updated_by,
+                    $product->status,
+                ]);
+            }
+            fclose($file);
+        };
+
+        return Response::stream($callback, 200, $headers);
     }
 }
