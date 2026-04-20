@@ -8,10 +8,8 @@
 <div class="card shadow p-4" style="max-width: 700px; margin: auto;">
 
     
-    <!-- Title -->
     <h3 class="text-center mb-4 fw-bold">{{ $product->name }}</h3>
 
-    <!-- Details Table -->
     <table class="table table-bordered table-striped">
         <tr>
             <th style="width: 30%;">ID</th>
@@ -21,6 +19,11 @@
         <tr>
             <th>Name</th>
             <td>{{ $product->name }}</td>
+        </tr>
+
+        <tr>
+            <th>Category</th>
+            <td>{{ $product->category->name ?? '-' }}</td>
         </tr>
 
         <tr>
@@ -57,7 +60,6 @@
         </tr>
     </table>
 
-    <!-- Back Button Center -->
     <div class="text-center mt-3">
         <a href="{{ route('products.index') }}" class="btn btn-primary px-4">
             Back to List
