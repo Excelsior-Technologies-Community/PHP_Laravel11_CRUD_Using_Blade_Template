@@ -20,12 +20,17 @@ class Product extends Model
      * Only these fields can be filled using create() or update().
      */
     protected $fillable = [
-        'name',          // Product name
-        'description',   // Product details
-        'price',         // Product price
-        'created_by',    // User ID who created the product
-        'updated_by',    // User ID who last updated the product
-        'status',        // Product status (Active/Inactive)
+        'category_id',
+        'name',
+        'description',
+        'price',
+        'created_by',
+        'updated_by',
+        'status',
     ];
-}
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+}

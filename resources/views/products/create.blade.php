@@ -7,18 +7,25 @@
 
 <div class="card p-4" style="max-width: 800px; margin: auto;">
 
-    <!-- Small Back Button -->
     <a href="{{ route('products.index') }}"
        class="btn btn-outline-secondary mb-3"
        style="width: 150px;">
         ← Back to List
     </a><br> 
 
-    <!-- Form Starts -->
     <form method="POST" action="{{ route('products.store') }}" class="row g-3 justify-content-center">
         @csrf
 
-        <!-- Product Name -->
+        <div class="col-12">
+            <label class="form-label fw-semibold">Category:</label>
+            <select name="category_id" class="form-control mx-auto" style="max-width: 400px;" required>
+                <option value="">-- Select Category --</option>
+                @foreach($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
+            </select>
+        </div>
+
         <div class="col-12">
             <label class="form-label fw-semibold">Product Name:</label>
             <input type="text"
@@ -29,7 +36,6 @@
                    style="max-width: 400px;">
         </div>
 
-        <!-- Price -->
         <div class="col-12">
             <label class="form-label fw-semibold">Price:</label>
             <input type="number"
@@ -41,7 +47,6 @@
                    style="max-width: 400px;">
         </div>
 
-        <!-- Description -->
         <div class="col-12">
             <label class="form-label fw-semibold">Description:</label>
             <textarea name="description"
@@ -51,7 +56,6 @@
                       style="max-width: 400px;"></textarea>
         </div>
 
-        <!-- Submit Button -->
         <div class="col-12 text-center mt-3">
             <button type="submit" class="btn btn-success px-4 py-2">
                 Add Product

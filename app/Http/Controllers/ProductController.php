@@ -3,97 +3,61 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 
 class ProductController extends Controller
 {
-    /**
-<<<<<<< HEAD
-     * Display product list with search + pagination
-     */
-    public function index(Request $request)
-    {
-        // Get search input from URL query (?search=value)
-        $search = $request->query('search');
-
-        // Query products with optional search
-        $products = Product::query()
-            ->when($search, function($query, $search) {
-                // If search exists, filter by multiple columns
-                $query->where(function($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%")
-                      ->orWhere('price', 'like', "%{$search}%")
-                      ->orWhere('id', 'like', "%{$search}%")
-                      ->orWhere('description', 'like', "%{$search}%");
-                });
-            })
-            ->paginate(5); // Paginate results, 5 products per page
-
-        // Pass products and search value to view
-        return view('products.index', compact('products', 'search'));
-    }
-
-=======
-     * Display product list with search + pagination + summary (total count + total price)
-     */
-
     public function index(Request $request)
     {
         $search = $request->query('search');
 
-        $productsQuery = Product::query()
+        $productsQuery = Product::with('category')
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
                         ->orWhere('price', 'like', "%{$search}%")
                         ->orWhere('id', 'like', "%{$search}%")
-                        ->orWhere('description', 'like', "%{$search}%");
+                        ->orWhere('description', 'like', "%{$search}%")
+                        ->orWhereHas('category', function($catQuery) use ($search) {
+                            $catQuery->where('name', 'like', "%{$search}%");
+                        });
                 });
             });
 
-        // Pagination
         $products = $productsQuery->paginate(5);
 
-        // New summary variables
-        $totalProducts = $productsQuery->count();       // Total products matching search
-        $totalValue = $productsQuery->sum('price');    // Total price sum
+        $totalProducts = $productsQuery->count();
+        $totalValue = $productsQuery->sum('price');
 
         return view('products.index', compact('products', 'search', 'totalProducts', 'totalValue'));
     }
 
->>>>>>> development
-
-    /**
-     * Show product create form
-     */
     public function create()
     {
-        return view('products.create');
+        $categories = Category::all();
+        return view('products.create', compact('categories'));
     }
 
-    /**
-     * Store new product in database
-     */
     public function store(Request $request)
     {
-        // Form validation rules
         $request->validate([
+            'category_id' => 'required|exists:categories,id',
             'name'  => 'required',
             'price' => 'required|numeric',
         ]);
 
-        // Insert new product record
         Product::create([
+            'category_id' => $request->category_id,
             'name'        => $request->name,
             'description' => $request->description,
             'price'       => $request->price,
-            'created_by'  => 1, // Hardcoded for now (later you can use Auth)
+            'created_by'  => 1,
             'updated_by'  => 1,
-            'status'      => 'Active', // Default status
+            'status'      => 'Active',
         ]);
 
-        // Redirect back with success message
         return redirect()->route('products.index')
 <<<<<<< HEAD
                          ->with('success', 'Product added successfully!');
@@ -102,32 +66,26 @@ class ProductController extends Controller
 >>>>>>> development
     }
 
-    /**
-     * Show the edit form
-     */
     public function edit(Product $product)
     {
-        // Pass selected product to edit page
-        return view('products.edit', compact('product'));
+        $categories = Category::all();
+        return view('products.edit', compact('product', 'categories'));
     }
 
-    /**
-     * Update product details
-     */
     public function update(Request $request, Product $product)
     {
-        // Validate form
         $request->validate([
+            'category_id' => 'required|exists:categories,id',
             'name'  => 'required',
             'price' => 'required|numeric',
         ]);
 
-        // Update product fields
         $product->update([
+            'category_id' => $request->category_id,
             'name'        => $request->name,
             'description' => $request->description,
             'price'       => $request->price,
-            'updated_by'  => 1, // Hardcoded for now
+            'updated_by'  => 1,
         ]);
 
         return redirect()->route('products.index')
@@ -138,15 +96,9 @@ class ProductController extends Controller
 >>>>>>> development
     }
 
-    /**
-     * Soft delete a product (mark deleted + soft delete)
-     */
     public function destroy(Product $product)
     {
-        // update status to Deleted
         $product->update(['status' => 'Deleted']);
-
-        // Soft delete (sets deleted_at)
         $product->delete();
 
         return redirect()->route('products.index')
@@ -157,9 +109,6 @@ class ProductController extends Controller
 >>>>>>> development
     }
 
-    /**
-     * Show product details page
-     */
     public function show(Product $product)
     {
         return view('products.show', compact('product'));
@@ -169,13 +118,16 @@ class ProductController extends Controller
     {
         $search = $request->query('search');
 
-        $products = Product::query()
+        $products = Product::with('category')
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
                         ->orWhere('price', 'like', "%{$search}%")
                         ->orWhere('id', 'like', "%{$search}%")
-                        ->orWhere('description', 'like', "%{$search}%");
+                        ->orWhere('description', 'like', "%{$search}%")
+                        ->orWhereHas('category', function($catQuery) use ($search) {
+                            $catQuery->where('name', 'like', "%{$search}%");
+                        });
                 });
             })
             ->get();
@@ -186,7 +138,7 @@ class ProductController extends Controller
             'Content-Disposition' => "attachment; filename=\"$filename\"",
         ];
 
-        $columns = ['ID', 'Name', 'Price', 'Description', 'Created By', 'Updated By', 'Status'];
+        $columns = ['ID', 'Name', 'Category', 'Price', 'Description', 'Created By', 'Updated By', 'Status'];
 
         $callback = function () use ($products, $columns) {
             $file = fopen('php://output', 'w');
@@ -196,6 +148,7 @@ class ProductController extends Controller
                 fputcsv($file, [
                     $product->id,
                     $product->name,
+                    $product->category->name ?? '-',
                     $product->price,
                     $product->description,
                     $product->created_by,
