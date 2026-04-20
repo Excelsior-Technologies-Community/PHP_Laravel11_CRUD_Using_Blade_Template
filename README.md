@@ -712,14 +712,26 @@ http://localhost:8000/products
 You can show this type Output : 
 
 index product page:
-<img width="1911" height="969" alt="Screenshot 2025-12-03 132129" src="https://github.com/user-attachments/assets/6f7a0db3-13ae-4831-8cf9-71aaf9b7e673" />
-add product page :
-<img width="1919" height="948" alt="Screenshot 2025-12-03 132157" src="https://github.com/user-attachments/assets/64731144-cb9b-4e47-9d14-8db42d41c15c" />
-edit product page :
-<img width="1911" height="962" alt="image" src="https://github.com/user-attachments/assets/f4c70bbd-fd07-4116-8b72-05c5dd371250" />
-show product page :
-<img width="1919" height="972" alt="Screenshot 2025-12-03 132300" src="https://github.com/user-attachments/assets/36723cfe-1f96-4dc3-abb4-70c4aadc5fc7" />
+<img width="1917" height="891" alt="Screenshot 2026-04-17 183359" src="https://github.com/user-attachments/assets/4344ffd8-58a6-4865-861a-5c0ed09cef82" />
 
+add product page :
+<img width="1915" height="906" alt="Screenshot 2026-04-17 183117" src="https://github.com/user-attachments/assets/1fb63a40-f4f7-4db6-91ff-977cebf1bebf" />
+
+edit product page :
+<img width="1919" height="910" alt="Screenshot 2026-04-17 183136" src="https://github.com/user-attachments/assets/4585f206-9a62-4519-8c48-21d50d1eee7b" />
+
+show product page :
+<img width="1919" height="913" alt="Screenshot 2026-04-17 183125" src="https://github.com/user-attachments/assets/c2fc5893-15f2-4a23-8430-f230338e77af" />
+
+
+index category page:
+<img width="1918" height="650" alt="Screenshot 2026-04-17 182117" src="https://github.com/user-attachments/assets/5dd5d324-79dc-457f-baf5-5ea807617abe" />
+
+add category page :
+<img width="1919" height="894" alt="Screenshot 2026-04-17 182129" src="https://github.com/user-attachments/assets/bdd0fa63-27cb-4ad0-a74f-1d0e9828f3a1" />
+
+edit category page :
+<img width="1915" height="904" alt="Screenshot 2026-04-17 182142" src="https://github.com/user-attachments/assets/60cc0207-3710-4e2a-a268-d82c14b17ebd" />
 
 You can now:
 
