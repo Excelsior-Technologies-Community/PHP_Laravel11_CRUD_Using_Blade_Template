@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
 
 /**
  * Redirect root URL (/) to products list page.
@@ -31,4 +32,6 @@ Route::get('products/restore/{id}', [ProductController::class, 'restore'])
 =======
 // Export products as CSV
 Route::get('products/export/csv', [ProductController::class, 'exportCSV'])->name('products.export.csv');
->>>>>>> development
+
+// Category Routes
+Route::resource('categories', CategoryController::class);
